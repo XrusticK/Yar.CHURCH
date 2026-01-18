@@ -81,8 +81,10 @@
             padding: 0 30px;
         }
 
-        .logo-img { height: 36px; width: auto; display: block; }
-        body.light-theme .logo-img { filter: invert(1); }
+        /* Логотип: по умолчанию инвертируем (черный -> белый) для темной темы */
+        .logo-img { height: 36px; width: auto; display: block; filter: invert(1); transition: 0.3s; }
+        /* В светлой теме убираем инверсию (оставляем черным) */
+        body.light-theme .logo-img { filter: none; }
 
         .header-left, .header-right { display: flex; align-items: center; gap: 20px; }
 
@@ -306,7 +308,7 @@
             <button class="burger-btn" onclick="toggleMenu()">
                 <span class="burger-line"></span><span class="burger-line"></span><span class="burger-line"></span>
             </button>
-            <a href="#top"><img src="Белый (1).png" alt="Лого" class="logo-img"></a>
+            <a href="#top"><img src="Черный.png" alt="Лого" class="logo-img"></a>
         </div>
 
         <nav class="desktop-nav">
