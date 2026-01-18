@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Ярославская церковь</title>
+    <link rel="icon" href="Черный.png" type="image/png">
+    
+    <style>
+        /* --- ГЛОБАЛЬНЫЕ НАСТРОЙКИ --- */
+        :root {
+            /* Цвета ТЕМНОЙ темы */
+            --bg-body: #101010;
+            --bg-card: #1A1A1A;
+            --bg-header: rgba(16, 16, 16, 0.95);
+            --text-main: #FFFFFF;
+            --text-secondary: #9E9E9E;
+            --accent: #00BFA5; /* Бирюзовый акцент */
+            --accent-text: #000000;
+            --border-color: #333333;
+            --shadow: 0 20px 40px rgba(0,0,0,0.5);
+            
+            /* ГЛАВНАЯ НАСТРОЙКА ШИРИНЫ */
+            --container-width: 1300px;
+        }
+
+        body.light-theme {
+            /* Цвета СВЕТЛОЙ темы */
+            --bg-body: #F5F5F5;
+            --bg-card: #FFFFFF;
+            --bg-header: rgba(255, 255, 255, 0.95);
+            --text-main: #212121;
+            --text-secondary: #616161;
+            --accent: #009688;
+            --accent-text: #FFFFFF;
+            --border-color: #E0E0E0;
+            --shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        html { scroll-behavior: smooth; }
+        body { 
+            margin: 0; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            line-height: 1.5;
+            transition: background-color 0.3s, color 0.3s;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; padding: 0; margin: 0; }
+        button { border: none; outline: none; background: none; cursor: pointer; font-family: inherit; }
+
+        /* --- ЕДИНЫЙ КОНТЕЙНЕР (СЕТКА) --- */
+        .main-container {
+            max-width: var(--container-width);
+            width: 95%; /* Чтобы на мобильных были отступы */
+            margin: 40px auto; /* Центрирование блока */
+        }
+
+        /* ЕДИНЫЙ СТИЛЬ БЛОКОВ (ФОН, СКРУГЛЕНИЕ) */
+        .info-block {
+            background-color: var(--bg-card);
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            padding: 50px;
+            box-sizing: border-box;
+            box-shadow: var(--shadow);
+            width: 100%;
+        }
+
+        /* --- ШАПКА --- */
+        header {
+            position: sticky; top: 0; z-index: 1000;
+            background-color: var(--bg-header);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            height: 80px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 30px;
+        }
+
+        .logo-img { height: 36px; width: auto; display: block; }
+        body.light-theme .logo-img { filter: invert(1); }
+
+        .header-left, .header-right { display: flex; align-items: center; gap: 20px; }
+
+        .desktop-nav { display: flex; gap: 25px; }
+        .nav-link { font-weight: 600; font-size: 1rem; opacity: 0.8; transition: 0.3s; }
+        .nav-link:hover { opacity: 1; color: var(--accent); }
+
+        .btn-donate {
+            background-color: var(--accent); color: var(--accent-text);
+            padding: 12px 28px; border-radius: 50px;
+            font-weight: 700; font-size: 0.9rem; transition: transform 0.2s;
+        }
+        .btn-donate:hover { transform: scale(1.05); }
+
+        .theme-btn svg { width: 24px; height: 24px; fill: var(--text-main); }
+        .theme-btn:hover { transform: rotate(15deg); }
+
+        .burger-btn { display: none; flex-direction: column; gap: 5px; z-index: 1100; }
+        .burger-line { width: 24px; height: 2px; background-color: var(--text-main); transition: 0.3s; }
+        .burger-btn.open .burger-line:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .burger-btn.open .burger-line:nth-child(2) { opacity: 0; }
+        .burger-btn.open .burger-line:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* --- СЛАЙДЕР --- */
+        .slider-container {
+            position: relative; width: 100%; height: 600px;
+            border-radius: 30px; overflow: hidden;
+            background-color: #000; box-shadow: var(--shadow);
+        }
+
+        .slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 1s ease-in-out;
+            display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; text-align: center;
+        }
+        .slide.active { opacity: 1; z-index: 1; }
+
+        .slide-content { z-index: 2; padding: 0 20px; text-shadow: 0 2px 20px rgba(0,0,0,0.8); }
+        .slide-tag { 
+            color: var(--accent); font-weight: 800; letter-spacing: 2px; 
+            text-transform: uppercase; font-size: 1.1rem; margin-bottom: 15px; display: block; 
+        }
+        .slide-title { 
+            font-size: 4.5rem; font-weight: 800; color: #fff; 
+            line-height: 1.1; margin: 0; text-transform: uppercase; 
+        }
+
+        /* Стрелки слайдера */
+        .arrow-btn {
+            position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+            width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center; transition: 0.3s;
+        }
+        .arrow-btn:hover { background: var(--accent); border-color: var(--accent); }
+        .arrow-btn svg { fill: white; width: 24px; height: 24px; }
+        .prev-btn { left: 20px; }
+        .next-btn { right: 20px; }
+
+        /* --- БЛОК ВИДЕО (ВНУТРИ INFO-BLOCK) --- */
+        .section-header {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 30px;
+        }
+        .section-title { font-size: 2.5rem; font-weight: 800; margin: 0; }
+        .btn-outline {
+            border: 2px solid var(--border-color); padding: 10px 30px; 
+            border-radius: 50px; font-weight: 600; color: var(--text-main);
+        }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+        .video-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;
+        }
+        .video-card {
+            width: 100%; aspect-ratio: 16/9; 
+            background-color: var(--bg-body); border-radius: 20px;
+            overflow: hidden; position: relative;
+            background-size: cover; background-position: center;
+            border: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: center; transition: 0.3s;
+        }
+        .video-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        .play-btn {
+            width: 50px; height: 50px; background: #FF0000; 
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); transition: 0.3s;
+        }
+        .video-card:hover .play-btn { transform: scale(1.1); background: #fff; }
+        .play-btn svg { fill: #fff; width: 20px; height: 20px; margin-left: 2px; }
+        .video-card:hover .play-btn svg { fill: #FF0000; }
+
+        /* --- БЛОК КОНТАКТОВ (ВНУТРИ INFO-BLOCK) --- */
+        .contacts-inner {
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around;
+            gap: 40px; text-align: center;
+        }
+        .pastor-info { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .pastor-img {
+            width: 180px; height: 180px; border-radius: 50%; 
+            object-fit: cover; border: 4px solid var(--accent);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .pastor-name { font-size: 1.8rem; font-weight: 800; margin: 0; line-height: 1.2; }
+        .pastor-role { color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+
+        .address-info { font-size: 1.3rem; }
+        .address-label { color: var(--text-secondary); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 10px; display: block; }
+
+        /* --- КАРТА (ВНУТРИ INFO-BLOCK, НО БЕЗ ОТСТУПОВ) --- */
+        .map-block {
+            padding: 0; overflow: hidden; /* Чтобы карта обрезалась по краям */
+            height: 600px;
+        }
+        .map-frame { width: 100%; height: 100%; border: 0; }
+
+        /* --- ПОДВАЛ --- */
+        footer {
+            background-color: var(--bg-card); border-top: 1px solid var(--border-color);
+            padding: 50px 30px; margin-top: 60px;
+        }
+        .footer-content {
+            max-width: var(--container-width); margin: 0 auto;
+            display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px;
+        }
+        .copyright { font-weight: bold; margin-bottom: 10px; }
+        .legal { font-size: 0.8rem; color: var(--text-secondary); max-width: 500px; }
+
+        .socials { display: flex; gap: 15px; }
+        .social-btn {
+            width: 45px; height: 45px; border-radius: 50%; 
+            border: 1px solid var(--border-color);
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+        .social-btn:hover { border-color: var(--accent); background: var(--bg-body); }
+        .social-btn svg { width: 24px; height: 24px; fill: var(--text-main); }
+        
+        /* Увеличенный логотип VK */
+        .social-btn.vk svg { width: 30px; height: 30px; }
+        .social-btn.vk:hover svg path { fill: #0077FF; }
+        
+        .social-btn.tg:hover svg { fill: #24A1DE; }
+        .social-btn.yt:hover svg { fill: #FF0000; }
+        .social-btn.rt:hover svg { fill: #0023ee; }
+
+        /* --- МОБИЛЬНОЕ МЕНЮ --- */
+        .mobile-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1050;
+            opacity: 0; visibility: hidden; transition: 0.3s;
+        }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+
+        .mobile-sidebar {
+            position: fixed; top: 0; left: 0; width: 280px; height: 100%;
+            background: var(--bg-card); z-index: 1060;
+            transform: translateX(-100%); transition: 0.3s;
+            padding: 80px 30px; box-sizing: border-box;
+            display: flex; flex-direction: column; gap: 20px;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+        }
+        .mobile-sidebar.active { transform: translateX(0); }
+        
+        .mob-link { font-size: 1.2rem; font-weight: 700; padding: 10px 0; border-bottom: 1px solid var(--border-color); }
+
+        /* --- МОДАЛКА --- */
+        .modal {
+            display: none; position: fixed; inset: 0; z-index: 2000;
+            background: rgba(0,0,0,0.9); align-items: center; justify-content: center;
+        }
+        .modal-img { max-width: 90%; max-height: 90vh; border-radius: 10px; }
+        .modal-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
+
+        /* АДАПТИВНОСТЬ */
+        @media (max-width: 1024px) {
+            .desktop-nav { display: none; }
+            .burger-btn { display: flex; }
+            .slide-title { font-size: 3rem; }
+            .slider-container { height: 500px; }
+            .map-block { height: 400px; }
+        }
+        @media (max-width: 768px) {
+            header { padding: 0 20px; }
+            .info-block { padding: 30px 20px; }
+            .btn-donate { display: none; } 
+            .footer-content { flex-direction: column; }
+            .socials { justify-content: flex-start; }
+            .arrow-btn { display: none; }
+        }
+    </style>
+</head>
+<body id="top">
+
+    <div class="mobile-overlay" id="overlay" onclick="toggleMenu()"></div>
+    <div class="mobile-sidebar" id="sidebar">
+        <a href="#top" class="mob-link" onclick="toggleMenu()">Главная</a>
+        <a href="#video-feed" class="mob-link" onclick="toggleMenu()">Проповеди</a>
+        <a href="#contacts" class="mob-link" onclick="toggleMenu()">Контакты</a>
+        <button class="btn-donate" onclick="toggleMenu(); openModal()" style="margin-top:20px; width:100%">Пожертвовать</button>
+    </div>
+
+    <div class="modal" id="modal" onclick="closeModal()">
+        <span class="modal-close">&times;</span>
+        <img class="modal-img" src="пожертвования.png" alt="Реквизиты">
+    </div>
+
+    <header>
+        <div class="header-left">
+            <button class="burger-btn" onclick="toggleMenu()">
+                <span class="burger-line"></span><span class="burger-line"></span><span class="burger-line"></span>
+            </button>
+            <a href="#top"><img src="Белый (1).png" alt="Лого" class="logo-img"></a>
+        </div>
+
+        <nav class="desktop-nav">
+            <a href="#top" class="nav-link">Главная</a>
+            <a href="#video-feed" class="nav-link">Проповеди</a>
+            <a href="#contacts" class="nav-link">Контакты</a>
+        </nav>
+
+        <div class="header-right">
+            <button class="btn-donate" onclick="openModal()">Пожертвовать</button>
+            <button class="theme-btn" id="themeToggle">
+                <svg viewBox="0 0 24 24"><path d="M12,18C11.11,18 10.26,17.8 9.5,17.45C11.56,16.5 13,14.42 13,12C13,9.58 11.56,7.5 9.5,6.55C10.26,6.2 11.11,6 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,12A8,8 0 0,0 12,4C7.58,4 4,7.58 4,12C4,16.42 7.58,20 12,20A8,8 0 0,0 20,12Z"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="slider-container">
+            <div class="slide active" style="background-image: url('Церковь квадрат.png');">
+                <div class="slide-content">
+                    <span class="slide-tag">Добро пожаловать</span>
+                    <h2 class="slide-title">Ярославская<br>Церковь</h2>
+                </div>
+            </div>
+            <div class="slide" style="background-image: linear-gradient(135deg, #00695C, #00BFA5);"> 
+                <div class="slide-content">
+                    <span class="slide-tag">Присоединяйтесь</span>
+                    <h2 class="slide-title">Время поста<br>и молитвы</h2>
+                </div>
+            </div>
+            
+            <button class="arrow-btn prev-btn" onclick="moveSlide(-1)">
+                <svg viewBox="0 0 24 24"><path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"/></svg>
+            </button>
+            <button class="arrow-btn next-btn" onclick="moveSlide(1)">
+                <svg viewBox="0 0 24 24"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/></svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container" id="video-feed">
+        <div class="info-block">
+            <div class="section-header">
+                <h2 class="section-title">Проповеди</h2>
+                <a href="https://www.youtube.com/@yachurch" target="_blank" class="btn-outline">Все видео</a>
+            </div>
+            <div class="video-grid" id="youtube-container">
+                <p style="color:var(--text-secondary)">Загрузка видео...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container" id="contacts">
+        <div class="info-block">
+            <div class="contacts-inner">
+                <div class="pastor-info">
+                    <img src="пастор.jpg" alt="Пастор" class="pastor-img">
+                    <div>
+                        <div class="pastor-role">Пастор церкви</div>
+                        <h3 class="pastor-name">Горничар<br>Иван Иванович</h3>
+                    </div>
+                </div>
+                <div class="address-info">
+                    <span class="address-label">Наш адрес</span>
+                    <strong>г. Ярославль</strong><br>ул. Большая Фёдоровская, 111
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="info-block map-block">
+            <iframe id="mapFrame" class="map-frame" src="https://yandex.ru/map-widget/v1/?ll=39.852796%2C57.607504&mode=search&pt=39.852796,57.607504,pm2rdm&z=17&theme=dark" allowfullscreen="true"></iframe>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-left">
+                <div class="copyright">© 2026 Ярославская церковь</div>
+            </div>
+            <div class="socials">
+                <a href="https://vk.com/yachurch" target="_blank" class="social-btn vk" title="VK">
+                    <svg viewBox="0 0 40 40">
+                        <path d="M30.4438 15.7381C30.5921 15.2742 30.4438 14.9333 29.738 14.9333H27.4041C26.8107 14.9333 26.5371 15.2278 26.3887 15.5525C26.3887 15.5525 25.2019 18.2663 23.5205 20.029C22.9766 20.5393 22.7293 20.7017 22.4326 20.7017C22.2843 20.7017 22.0695 20.5393 22.0695 20.0754V15.7381C22.0695 15.1814 21.8973 14.9333 21.4027 14.9333H17.7352C17.3644 14.9333 17.1413 15.1917 17.1413 15.4366C17.1413 15.9643 17.982 16.086 18.0686 17.5705V20.7945C18.0686 21.5013 17.9325 21.6295 17.6358 21.6295C16.8446 21.6295 14.92 18.9036 13.7786 15.7845C13.5549 15.1782 13.3305 14.9333 12.734 14.9333H10.4002C9.73335 14.9333 9.59998 15.2278 9.59998 15.5525C9.59998 16.1324 10.3912 19.0085 13.2841 22.8124C15.2127 25.4101 17.9299 26.8183 20.4025 26.8183C21.886 26.8183 22.0695 26.5055 22.0695 25.9668V24.0034C22.0695 23.3779 22.2101 23.2531 22.6799 23.2531C23.026 23.2531 23.6194 23.4154 25.0041 24.6679C26.5865 26.1523 26.8474 26.8183 27.7375 26.8183H30.0714C30.7382 26.8183 31.0716 26.5055 30.8793 25.8883C30.6688 25.2731 29.9133 24.3806 28.9108 23.3226C28.3668 22.7196 27.5509 22.0702 27.3036 21.7454C26.9574 21.3279 27.0563 21.1424 27.3036 20.7713C27.3036 20.7713 30.1471 17.0138 30.4438 15.7381Z"/>
+                    </svg>
+                </a>
+                <a href="https://t.me/yachurch" target="_blank" class="social-btn tg" title="Telegram">
+                    <svg viewBox="0 0 24 24"><path d="M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z"/></svg>
+                </a>
+                <a href="https://www.youtube.com/channel/UCBZ_qrBtWpSAPhHmb9Mtp-A" target="_blank" class="social-btn yt" title="YouTube">
+                    <svg viewBox="0 0 24 24"><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.66 21.94,11.44V12.56C21.94,13.34 21.91,14.13 21.84,14.93C21.78,15.73 21.69,16.36 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L13.5,19L12,19C10.59,19 9.16,18.94 7.7,18.9C6.23,18.87 4.96,18.79 3.9,18.66C3.06,18.54 2.39,18.07 1.96,17.16C1.46,16.14 1.21,14.6 1.21,12.56V11.44C1.21,9.4 1.46,7.86 1.96,6.84C2.39,5.93 3.06,5.46 3.9,5.34C4.96,5.21 6.23,5.13 7.7,5.1C9.16,5.06 10.59,5 12,5C13.41,5 14.84,5.06 16.3,5.1C17.77,5.13 19.04,5.21 20.1,5.34C21,5.46 21.56,5.93 22,6.84L21.56,7.17Z"/></svg>
+                </a>
+                <a href="https://rutube.ru/channel/38731742/" target="_blank" class="social-btn rt" title="Rutube">
+                    <svg viewBox="0 0 24 24"><path d="M6 5h5.5c2.5 0 4.5 2 4.5 4.5S14 14 11.5 14H8v5H6V5z M8 7v5h3.5c1.4 0 2.5-1.1 2.5-2.5S12.9 7 11.5 7H8z"/><path d="M12.5 14l3.5 5h2.5l-4-5.5h-2z"/><circle cx="19" cy="6" r="2.5"/></svg>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. ТЕМА И КАРТА ---
+        const themeBtn = document.getElementById('themeToggle');
+        const mapFrame = document.getElementById('mapFrame');
+        const themeIcon = themeBtn.querySelector('svg');
+        const body = document.body;
+
+        const iconSun = '<path d="M12,7A5,5 0 0,1 17,12A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,2L14.39,5.42C13.65,5.15 12.84,5 12,5C11.16,5 10.35,5.15 9.61,5.42L12,2M3.34,7L7.5,7.53C6.97,8.11 6.53,8.79 6.2,9.53L3.34,7M3.34,17L6.2,14.47C6.53,15.21 6.97,15.89 7.5,16.47L3.34,17M20.65,17L16.5,16.47C17.03,15.89 17.47,15.21 17.8,14.47L20.65,17M20.65,7L17.8,9.53C17.47,8.79 17.03,8.11 16.5,7.53L20.65,7M12,22L9.61,18.58C10.35,18.85 11.16,19 12,19C12.84,19 13.65,18.85 14.39,18.58L12,22Z"/>';
+        const iconMoon = '<path d="M12,18C11.11,18 10.26,17.8 9.5,17.45C11.56,16.5 13,14.42 13,12C13,9.58 11.56,7.5 9.5,6.55C10.26,6.2 11.11,6 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,12A8,8 0 0,0 12,4C7.58,4 4,7.58 4,12C4,16.42 7.58,20 12,20A8,8 0 0,0 20,12Z"/>';
+
+        function updateTheme(isLight) {
+            if (isLight) {
+                body.classList.add('light-theme');
+                themeIcon.innerHTML = iconSun;
+                if(mapFrame) mapFrame.src = mapFrame.src.replace('theme=dark', 'theme=light');
+            } else {
+                body.classList.remove('light-theme');
+                themeIcon.innerHTML = iconMoon;
+                if(mapFrame) mapFrame.src = mapFrame.src.replace('theme=light', 'theme=dark');
+            }
+        }
+
+        if (localStorage.getItem('theme') === 'light') updateTheme(true);
+        else { themeIcon.innerHTML = iconMoon; } 
+
+        themeBtn.addEventListener('click', () => {
+            const isLight = !body.classList.contains('light-theme');
+            updateTheme(isLight);
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+
+        // --- 2. СЛАЙДЕР ---
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        
+        function moveSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+        setInterval(() => moveSlide(1), 7000);
+
+        // --- 3. YOUTUBE ---
+        const channelID = "UCBZ_qrBtWpSAPhHmb9Mtp-A"; 
+        const rssUrl = `https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=${channelID}`;
+        
+        async function loadVideos() {
+            const container = document.getElementById('youtube-container');
+            try {
+                const res = await fetch(rssUrl);
+                const data = await res.json();
+                if(data.status === 'ok') {
+                    container.innerHTML = '';
+                    data.items.slice(0,3).forEach(v => {
+                        const link = document.createElement('a');
+                        link.className = 'video-card';
+                        link.href = v.link; link.target = '_blank';
+                        link.style.backgroundImage = `url('${v.thumbnail.replace('hqdefault', 'maxresdefault')}')`;
+                        link.innerHTML = `<div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8,5.14V19.14L19,12.14L8,5.14Z"/></svg></div>`;
+                        container.appendChild(link);
+                    });
+                }
+            } catch (e) { console.log('Youtube error'); }
+        }
+        document.addEventListener("DOMContentLoaded", loadVideos);
+
+        // --- 4. МЕНЮ ---
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+            document.querySelector('.burger-btn').classList.toggle('open');
+        }
+
+        // --- 5. МОДАЛКА ---
+        function openModal() { document.getElementById('modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('modal').style.display = 'none'; }
+    </script>
+</body>
+</html>
