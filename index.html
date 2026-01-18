@@ -12,7 +12,7 @@
             /* Цвета ТЕМНОЙ темы */
             --bg-body: #101010;
             --bg-card: #1A1A1A;
-            --bg-header: rgba(16, 16, 16, 0.95);
+            --bg-header: rgba(16, 16, 16, 0.90);
             --text-main: #FFFFFF;
             --text-secondary: #9E9E9E;
             --accent: #00BFA5; /* Бирюзовый акцент */
@@ -28,7 +28,7 @@
             /* Цвета СВЕТЛОЙ темы */
             --bg-body: #F5F5F5;
             --bg-card: #FFFFFF;
-            --bg-header: rgba(255, 255, 255, 0.95);
+            --bg-header: rgba(255, 255, 255, 0.90);
             --text-main: #212121;
             --text-secondary: #616161;
             --accent: #009688;
@@ -46,6 +46,7 @@
             line-height: 1.5;
             transition: background-color 0.3s, color 0.3s;
             overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
         }
 
         a { text-decoration: none; color: inherit; transition: 0.3s; }
@@ -55,8 +56,8 @@
         /* --- ЕДИНЫЙ КОНТЕЙНЕР (СЕТКА) --- */
         .main-container {
             max-width: var(--container-width);
-            width: 95%; /* Чтобы на мобильных были отступы */
-            margin: 40px auto; /* Центрирование блока */
+            width: 95%; 
+            margin: 40px auto; 
         }
 
         /* ЕДИНЫЙ СТИЛЬ БЛОКОВ (ФОН, СКРУГЛЕНИЕ) */
@@ -75,15 +76,15 @@
             position: sticky; top: 0; z-index: 1000;
             background-color: var(--bg-header);
             backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-color);
             height: 80px;
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 30px;
+            transition: all 0.3s ease;
         }
 
-        /* Логотип: по умолчанию инвертируем (черный -> белый) для темной темы */
         .logo-img { height: 36px; width: auto; display: block; filter: invert(1); transition: 0.3s; }
-        /* В светлой теме убираем инверсию (оставляем черным) */
         body.light-theme .logo-img { filter: none; }
 
         .header-left, .header-right { display: flex; align-items: center; gap: 20px; }
@@ -96,7 +97,7 @@
             background-color: var(--accent); color: var(--accent-text);
             padding: 12px 28px; border-radius: 50px;
             font-weight: 700; font-size: 0.9rem; transition: transform 0.2s;
-            display: inline-block; /* Для ссылок, которые выглядят как кнопки */
+            display: inline-block;
             text-align: center;
         }
         .btn-donate:hover { transform: scale(1.05); }
@@ -104,8 +105,8 @@
         .theme-btn svg { width: 24px; height: 24px; fill: var(--text-main); }
         .theme-btn:hover { transform: rotate(15deg); }
 
-        .burger-btn { display: none; flex-direction: column; gap: 5px; z-index: 1100; }
-        .burger-line { width: 24px; height: 2px; background-color: var(--text-main); transition: 0.3s; }
+        .burger-btn { display: none; flex-direction: column; gap: 5px; z-index: 1100; padding: 10px; margin-left: -10px; }
+        .burger-line { width: 24px; height: 2px; background-color: var(--text-main); transition: 0.3s; border-radius: 2px; }
         .burger-btn.open .burger-line:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
         .burger-btn.open .burger-line:nth-child(2) { opacity: 0; }
         .burger-btn.open .burger-line:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
@@ -123,17 +124,16 @@
             opacity: 0; transition: opacity 1s ease-in-out;
             display: flex; flex-direction: column; 
             align-items: center; justify-content: center; text-align: center;
-            pointer-events: none; /* Скрытые слайды некликабельны */
+            pointer-events: none; 
         }
         .slide.active { opacity: 1; z-index: 1; pointer-events: auto; }
         
-        /* Затемнение слайда для читаемости текста */
         .slide::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.4); z-index: 1;
         }
 
-        .slide-content { z-index: 2; padding: 0 20px; text-shadow: 0 2px 20px rgba(0,0,0,0.8); }
+        .slide-content { z-index: 2; padding: 0 20px; text-shadow: 0 2px 20px rgba(0,0,0,0.8); width: 100%; box-sizing: border-box; }
         .slide-tag { 
             color: var(--accent); font-weight: 800; letter-spacing: 2px; 
             text-transform: uppercase; font-size: 1.1rem; margin-bottom: 15px; display: block; 
@@ -143,7 +143,6 @@
             line-height: 1.1; margin: 0; text-transform: uppercase; 
         }
 
-        /* Стрелки слайдера */
         .arrow-btn {
             position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
             width: 50px; height: 50px; border-radius: 50%;
@@ -156,7 +155,7 @@
         .prev-btn { left: 20px; }
         .next-btn { right: 20px; }
 
-        /* --- БЛОК ВИДЕО (ВНУТРИ INFO-BLOCK) --- */
+        /* --- БЛОК ВИДЕО --- */
         .section-header {
             display: flex; justify-content: space-between; align-items: center;
             margin-bottom: 30px;
@@ -169,7 +168,7 @@
         .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
 
         .video-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;
         }
         .video-card {
             width: 100%; aspect-ratio: 16/9; 
@@ -189,7 +188,7 @@
         .play-btn svg { fill: #fff; width: 20px; height: 20px; margin-left: 2px; }
         .video-card:hover .play-btn svg { fill: #FF0000; }
 
-        /* --- БЛОК КОНТАКТОВ (ВНУТРИ INFO-BLOCK) --- */
+        /* --- КОНТАКТЫ --- */
         .contacts-inner {
             display: flex; flex-wrap: wrap; align-items: center; justify-content: space-around;
             gap: 40px; text-align: center;
@@ -206,9 +205,9 @@
         .address-info { font-size: 1.3rem; }
         .address-label { color: var(--text-secondary); font-size: 0.9rem; text-transform: uppercase; margin-bottom: 10px; display: block; }
 
-        /* --- КАРТА (ВНУТРИ INFO-BLOCK, НО БЕЗ ОТСТУПОВ) --- */
+        /* --- КАРТА --- */
         .map-block {
-            padding: 0; overflow: hidden; /* Чтобы карта обрезалась по краям */
+            padding: 0; overflow: hidden; 
             height: 600px;
         }
         .map-frame { width: 100%; height: 100%; border: 0; }
@@ -235,10 +234,8 @@
         .social-btn:hover { border-color: var(--accent); background: var(--bg-body); }
         .social-btn svg { width: 24px; height: 24px; fill: var(--text-main); }
         
-        /* Увеличенный логотип VK */
         .social-btn.vk svg { width: 30px; height: 30px; }
         .social-btn.vk:hover svg path { fill: #0077FF; }
-        
         .social-btn.tg:hover svg { fill: #24A1DE; }
         .social-btn.yt:hover svg { fill: #FF0000; }
         .social-btn.rt:hover svg { fill: #0023ee; }
@@ -270,7 +267,7 @@
         .modal-img { max-width: 90%; max-height: 90vh; border-radius: 10px; }
         .modal-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer; }
 
-        /* АДАПТИВНОСТЬ */
+        /* --- АДАПТИВНОСТЬ (ТЕЛЕФОНЫ) --- */
         @media (max-width: 1024px) {
             .desktop-nav { display: none; }
             .burger-btn { display: flex; }
@@ -278,13 +275,45 @@
             .slider-container { height: 500px; }
             .map-block { height: 400px; }
         }
+
+        /* СПЕЦИАЛЬНО ДЛЯ МОБИЛЬНЫХ ТЕЛЕФОНОВ */
         @media (max-width: 768px) {
-            header { padding: 0 20px; }
-            .info-block { padding: 30px 20px; }
-            .btn-donate { display: none; } 
-            .footer-content { flex-direction: column; }
+            /* Шапка компактнее */
+            header { padding: 0 15px; height: 60px; }
+            .logo-img { height: 28px; }
+            .theme-btn svg { width: 20px; height: 20px; }
+            .burger-btn { margin-left: 0; }
+            .header-right { gap: 10px; }
+
+            /* Контейнеры на всю ширину с отступами */
+            .main-container { width: 92%; margin: 20px auto; }
+            .info-block { padding: 30px 20px; border-radius: 20px; }
+
+            /* Слайдер на весь экран */
+            .slider-container { height: 80vh; border-radius: 20px; }
+            .slide-title { font-size: 2.8rem; line-height: 1.1; }
+            .slide-tag { font-size: 0.9rem; }
+            
+            /* Скрываем кнопку пожертвовать в хедере (она в меню) */
+            header .btn-donate { display: none; } 
+            
+            /* Секции */
+            .section-title { font-size: 2rem; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .video-grid { grid-template-columns: 1fr; }
+            
+            /* Контакты */
+            .contacts-inner { gap: 30px; }
+            .pastor-img { width: 140px; height: 140px; }
+            .pastor-name { font-size: 1.5rem; }
+            
+            /* Подвал */
+            footer { padding: 40px 20px; }
+            .footer-content { flex-direction: column; gap: 30px; }
             .socials { justify-content: flex-start; }
-            .arrow-btn { display: none; } /* Скрываем стрелки на мобильном, оставляем автоплей */
+            
+            /* Стрелки слайдера можно скрыть, листаем пальцем */
+            .arrow-btn { display: none; }
         }
     </style>
 </head>
@@ -326,8 +355,8 @@
     </header>
 
     <div class="main-container">
-        <div class="slider-container">
-            <!-- Слайд 1: Приветствие -->
+        <!-- Слайдер с поддержкой свайпов -->
+        <div class="slider-container" id="mainSlider">
             <div class="slide active" style="background-image: url('Церковь квадрат.png');">
                 <div class="slide-content">
                     <span class="slide-tag">Добро пожаловать</span>
@@ -335,7 +364,6 @@
                 </div>
             </div>
             
-            <!-- Слайд 2: Рождество (НОВЫЙ) -->
             <div class="slide" style="background-image: url('рождество.png');">
                 <div class="slide-content">
                     <span class="slide-tag">28 декабря</span>
@@ -344,7 +372,6 @@
                 </div>
             </div>
             
-            <!-- Стрелки -->
             <button class="arrow-btn prev-btn" onclick="moveSlide(-1)">
                 <svg viewBox="0 0 24 24"><path d="M15.41,16.58L10.83,12L15.41,7.41L14,6L8,12L14,18L15.41,16.58Z"/></svg>
             </button>
@@ -445,16 +472,43 @@
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
 
-        // --- 2. СЛАЙДЕР ---
+        // --- 2. СЛАЙДЕР С ПОДДЕРЖКОЙ СВАЙПОВ ---
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
+        let touchStartX = 0;
+        let touchEndX = 0;
         
         function moveSlide(n) {
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + n + slides.length) % slides.length;
             slides[currentSlide].classList.add('active');
         }
-        setInterval(() => moveSlide(1), 7000);
+        
+        // Автопереключение
+        let sliderInterval = setInterval(() => moveSlide(1), 7000);
+
+        // Обработка свайпов
+        const sliderContainer = document.getElementById('mainSlider');
+        
+        sliderContainer.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+            clearInterval(sliderInterval); // Останавливаем автоплей при касании
+        });
+
+        sliderContainer.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            sliderInterval = setInterval(() => moveSlide(1), 7000); // Запускаем снова
+        });
+
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) {
+                moveSlide(1); // Свайп влево -> следующий слайд
+            }
+            if (touchEndX > touchStartX + 50) {
+                moveSlide(-1); // Свайп вправо -> предыдущий слайд
+            }
+        }
 
         // --- 3. YOUTUBE ---
         const channelID = "UCBZ_qrBtWpSAPhHmb9Mtp-A"; 
