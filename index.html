@@ -2,33 +2,31 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ярославская церковь</title>
     <link rel="icon" href="Черный.png" type="image/png">
     
     <style>
         /* --- ГЛОБАЛЬНЫЕ НАСТРОЙКИ --- */
         :root {
-            /* Цвета ТЕМНОЙ темы */
+            /* ТЕМНАЯ ТЕМА */
             --bg-body: #101010;
             --bg-card: #1A1A1A;
-            --bg-header: rgba(16, 16, 16, 0.90);
+            --bg-header: rgba(16, 16, 16, 0.95);
             --text-main: #FFFFFF;
             --text-secondary: #9E9E9E;
-            --accent: #00BFA5; /* Бирюзовый акцент */
+            --accent: #00BFA5; 
             --accent-text: #000000;
             --border-color: #333333;
             --shadow: 0 20px 40px rgba(0,0,0,0.5);
-            
-            /* ГЛАВНАЯ НАСТРОЙКА ШИРИНЫ */
-            --container-width: 1300px;
+            --container-width: 1200px;
         }
 
         body.light-theme {
-            /* Цвета СВЕТЛОЙ темы */
+            /* СВЕТЛАЯ ТЕМА */
             --bg-body: #F5F5F5;
             --bg-card: #FFFFFF;
-            --bg-header: rgba(255, 255, 255, 0.90);
+            --bg-header: rgba(255, 255, 255, 0.95);
             --text-main: #212121;
             --text-secondary: #616161;
             --accent: #009688;
@@ -53,14 +51,13 @@
         ul { list-style: none; padding: 0; margin: 0; }
         button { border: none; outline: none; background: none; cursor: pointer; font-family: inherit; }
 
-        /* --- ЕДИНЫЙ КОНТЕЙНЕР (СЕТКА) --- */
+        /* --- КОНТЕЙНЕРЫ --- */
         .main-container {
             max-width: var(--container-width);
-            width: 95%; 
+            width: 90%; 
             margin: 40px auto; 
         }
 
-        /* ЕДИНЫЙ СТИЛЬ БЛОКОВ (ФОН, СКРУГЛЕНИЕ) */
         .info-block {
             background-color: var(--bg-card);
             border-radius: 30px;
@@ -97,8 +94,7 @@
             background-color: var(--accent); color: var(--accent-text);
             padding: 12px 28px; border-radius: 50px;
             font-weight: 700; font-size: 0.9rem; transition: transform 0.2s;
-            display: inline-block;
-            text-align: center;
+            display: inline-block; text-align: center;
         }
         .btn-donate:hover { transform: scale(1.05); }
 
@@ -133,7 +129,11 @@
             background: rgba(0,0,0,0.4); z-index: 1;
         }
 
-        .slide-content { z-index: 2; padding: 0 20px; text-shadow: 0 2px 20px rgba(0,0,0,0.8); width: 100%; box-sizing: border-box; }
+        .slide-content { 
+            z-index: 2; padding: 0 20px; 
+            text-shadow: 0 2px 20px rgba(0,0,0,0.8); 
+            width: 100%; box-sizing: border-box; 
+        }
         .slide-tag { 
             color: var(--accent); font-weight: 800; letter-spacing: 2px; 
             text-transform: uppercase; font-size: 1.1rem; margin-bottom: 15px; display: block; 
@@ -141,6 +141,7 @@
         .slide-title { 
             font-size: 4.5rem; font-weight: 800; color: #fff; 
             line-height: 1.1; margin: 0; text-transform: uppercase; 
+            word-wrap: break-word; /* Перенос длинных слов */
         }
 
         .arrow-btn {
@@ -154,6 +155,60 @@
         .arrow-btn svg { fill: white; width: 24px; height: 24px; }
         .prev-btn { left: 20px; }
         .next-btn { right: 20px; }
+
+        /* --- РАСПИСАНИЕ (КАЛЕНДАРЬ) --- */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .event-card {
+            background-color: var(--bg-body);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 30px;
+            transition: 0.3s;
+            display: flex; flex-direction: column; 
+            /* justify-content: space-between; убрал, чтобы список шел сверху */
+            min-height: 160px;
+        }
+        .event-card:hover { transform: translateY(-5px); border-color: var(--accent); }
+        
+        .event-date {
+            font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
+            color: var(--accent); margin-bottom: 15px;
+        }
+        .event-title { font-size: 1.4rem; font-weight: 700; margin: 0 0 5px 0; line-height: 1.2; }
+        .event-time { 
+            display: flex; align-items: center; gap: 8px; 
+            color: var(--text-secondary); font-size: 0.95rem; font-weight: 600;
+        }
+        .event-time svg { width: 18px; height: 18px; fill: currentColor; }
+
+        /* Список расписания */
+        .schedule-list { list-style: none; padding: 0; margin: 0; }
+        .schedule-list li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            font-size: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 8px;
+        }
+        /* В светлой теме полоска темнее */
+        body.light-theme .schedule-list li { border-bottom: 1px solid rgba(0,0,0,0.05); }
+        
+        .schedule-list li:last-child { border-bottom: none; margin-bottom: 0; }
+        .time-badge {
+            background-color: var(--border-color);
+            color: var(--text-main);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            white-space: nowrap;
+        }
 
         /* --- БЛОК ВИДЕО --- */
         .section-header {
@@ -278,48 +333,40 @@
 
         /* СПЕЦИАЛЬНО ДЛЯ МОБИЛЬНЫХ ТЕЛЕФОНОВ */
         @media (max-width: 768px) {
-            /* Шапка компактнее */
             header { padding: 0 15px; height: 60px; }
             .logo-img { height: 28px; }
             .theme-btn svg { width: 20px; height: 20px; }
             .burger-btn { margin-left: 0; }
             .header-right { gap: 10px; }
 
-            /* Контейнеры на всю ширину с отступами */
             .main-container { width: 92%; margin: 20px auto; }
             .info-block { padding: 30px 20px; border-radius: 20px; }
 
-            /* Слайдер на весь экран */
             .slider-container { height: 80vh; border-radius: 20px; }
             
-            /* ИСПРАВЛЕНИЕ: Уменьшенный шрифт для заголовков на телефоне */
             .slide-title { 
-                font-size: 1.8rem; /* Ещё меньше для длинных слов */
+                font-size: 1.8rem; 
                 line-height: 1.1; 
                 word-wrap: break-word; 
                 hyphens: auto; 
             }
             .slide-tag { font-size: 0.8rem; letter-spacing: 1px; }
             
-            /* Скрываем кнопку пожертвовать в хедере (она в меню) */
             header .btn-donate { display: none; } 
             
-            /* Секции */
             .section-title { font-size: 1.8rem; }
             .section-header { flex-direction: column; align-items: flex-start; gap: 15px; }
             .video-grid { grid-template-columns: 1fr; }
+            .calendar-grid { grid-template-columns: 1fr; }
             
-            /* Контакты */
             .contacts-inner { gap: 30px; }
             .pastor-img { width: 140px; height: 140px; }
             .pastor-name { font-size: 1.5rem; }
             
-            /* Подвал */
             footer { padding: 40px 20px; }
             .footer-content { flex-direction: column; gap: 30px; }
             .socials { justify-content: flex-start; }
             
-            /* Стрелки слайдера можно скрыть, листаем пальцем */
             .arrow-btn { display: none; }
         }
     </style>
@@ -329,6 +376,7 @@
     <div class="mobile-overlay" id="overlay" onclick="toggleMenu()"></div>
     <div class="mobile-sidebar" id="sidebar">
         <a href="#top" class="mob-link" onclick="toggleMenu()">Главная</a>
+        <a href="#calendar" class="mob-link" onclick="toggleMenu()">Календарь</a>
         <a href="#video-feed" class="mob-link" onclick="toggleMenu()">Новости</a>
         <a href="#contacts" class="mob-link" onclick="toggleMenu()">Контакты</a>
         <button class="btn-donate" onclick="toggleMenu(); openModal()" style="margin-top:20px; width:100%">Пожертвовать</button>
@@ -349,6 +397,7 @@
 
         <nav class="desktop-nav">
             <a href="#top" class="nav-link">Главная</a>
+            <a href="#calendar" class="nav-link">Календарь</a>
             <a href="#video-feed" class="nav-link">Новости</a>
             <a href="#contacts" class="nav-link">Контакты</a>
         </nav>
@@ -362,7 +411,7 @@
     </header>
 
     <div class="main-container">
-        <!-- Слайдер с поддержкой свайпов -->
+        <!-- Слайдер -->
         <div class="slider-container" id="mainSlider">
             <div class="slide active" style="background-image: url('Церковь квадрат.png');">
                 <div class="slide-content">
@@ -388,15 +437,65 @@
         </div>
     </div>
 
+    <!-- БЛОК РАСПИСАНИЕ -->
+    <div class="main-container" id="calendar">
+        <div class="info-block">
+            <div class="section-header">
+                <h2 class="section-title">Расписание</h2>
+            </div>
+            <div class="calendar-grid">
+                <!-- ВТОРНИК -->
+                <div class="event-card">
+                    <div>
+                        <div class="event-date">Вторник</div>
+                        <h3 class="event-title">Молитвенное служение</h3>
+                    </div>
+                    <div class="event-time"><svg viewBox="0 0 24 24"><path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/></svg> 12:00</div>
+                </div>
+
+                <!-- СРЕДА (НОВОЕ) -->
+                <div class="event-card">
+                    <div>
+                        <div class="event-date">Среда</div>
+                        <h3 class="event-title">Домашние группы</h3>
+                    </div>
+                    <div class="event-time">
+                        <svg viewBox="0 0 24 24"><path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M11,17H13V15H11V17M11,13H13V7H11V13Z"/></svg> 
+                        Время и место уточняйте
+                    </div>
+                </div>
+
+                <!-- ЧЕТВЕРГ (НОВОЕ) -->
+                <div class="event-card">
+                    <div>
+                        <div class="event-date">Четверг</div>
+                        <h3 class="event-title">Разбор СШ</h3>
+                    </div>
+                    <div class="event-time"><svg viewBox="0 0 24 24"><path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/></svg> 19:00</div>
+                </div>
+
+                <!-- СУББОТА (Списком) -->
+                <div class="event-card">
+                    <div class="event-date">Суббота</div>
+                    <ul class="schedule-list">
+                        <li><span class="time-badge">09:00</span> Молитвенное служение</li>
+                        <li><span class="time-badge">10:00</span> Субботняя школа и школа Библии</li>
+                        <li><span class="time-badge">12:00</span> Проповедь</li>
+                        <li><span class="time-badge">15:00</span> Клубы «Следопыт» и «Искатели приключений»</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="main-container" id="video-feed">
         <div class="info-block">
             <div class="section-header">
-                <h2 class="section-title">Видео</h2>
-                <a href="https://vk.com/yachurch" target="_blank" class="btn-outline">Группа ВК</a>
+                <h2 class="section-title">ВКонтакте</h2>
+                <a href="https://vk.com/yachurch" target="_blank" class="btn-outline">Открыть группу</a>
             </div>
-            <!-- Контейнер для Видео -->
             <div class="video-grid" id="content-container">
-                <p style="color:var(--text-secondary)">Загрузка...</p>
+                <p style="color:var(--text-secondary)">Загрузка новостей...</p>
             </div>
         </div>
     </div>
@@ -432,30 +531,20 @@
             </div>
             <div class="socials">
                 <a href="https://vk.com/yachurch" target="_blank" class="social-btn vk" title="VK">
-                    <svg viewBox="0 0 40 40">
-                        <path d="M30.4438 15.7381C30.5921 15.2742 30.4438 14.9333 29.738 14.9333H27.4041C26.8107 14.9333 26.5371 15.2278 26.3887 15.5525C26.3887 15.5525 25.2019 18.2663 23.5205 20.029C22.9766 20.5393 22.7293 20.7017 22.4326 20.7017C22.2843 20.7017 22.0695 20.5393 22.0695 20.0754V15.7381C22.0695 15.1814 21.8973 14.9333 21.4027 14.9333H17.7352C17.3644 14.9333 17.1413 15.1917 17.1413 15.4366C17.1413 15.9643 17.982 16.086 18.0686 17.5705V20.7945C18.0686 21.5013 17.9325 21.6295 17.6358 21.6295C16.8446 21.6295 14.92 18.9036 13.7786 15.7845C13.5549 15.1782 13.3305 14.9333 12.734 14.9333H10.4002C9.73335 14.9333 9.59998 15.2278 9.59998 15.5525C9.59998 16.1324 10.3912 19.0085 13.2841 22.8124C15.2127 25.4101 17.9299 26.8183 20.4025 26.8183C21.886 26.8183 22.0695 26.5055 22.0695 25.9668V24.0034C22.0695 23.3779 22.2101 23.2531 22.6799 23.2531C23.026 23.2531 23.6194 23.4154 25.0041 24.6679C26.5865 26.1523 26.8474 26.8183 27.7375 26.8183H30.0714C30.7382 26.8183 31.0716 26.5055 30.8793 25.8883C30.6688 25.2731 29.9133 24.3806 28.9108 23.3226C28.3668 22.7196 27.5509 22.0702 27.3036 21.7454C26.9574 21.3279 27.0563 21.1424 27.3036 20.7713C27.3036 20.7713 30.1471 17.0138 30.4438 15.7381Z"/>
-                    </svg>
-                </a>
-                <a href="https://t.me/yachurch" target="_blank" class="social-btn tg" title="Telegram">
-                    <svg viewBox="0 0 24 24"><path d="M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z"/></svg>
-                </a>
-                <a href="https://www.youtube.com/channel/UCBZ_qrBtWpSAPhHmb9Mtp-A" target="_blank" class="social-btn yt" title="YouTube">
-                    <svg viewBox="0 0 24 24"><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.66 21.94,11.44V12.56C21.94,13.34 21.91,14.13 21.84,14.93C21.78,15.73 21.69,16.36 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L13.5,19L12,19C10.59,19 9.16,18.94 7.7,18.9C6.23,18.87 4.96,18.79 3.9,18.66C3.06,18.54 2.39,18.07 1.96,17.16C1.46,16.14 1.21,14.6 1.21,12.56V11.44C1.21,9.4 1.46,7.86 1.96,6.84C2.39,5.93 3.06,5.46 3.9,5.34C4.96,5.21 6.23,5.13 7.7,5.1C9.16,5.06 10.59,5 12,5C13.41,5 14.84,5.06 16.3,5.1C17.77,5.13 19.04,5.21 20.1,5.34C21,5.46 21.56,5.93 22,6.84L21.56,7.17Z"/></svg>
-                </a>
-                <a href="https://rutube.ru/channel/38731742/" target="_blank" class="social-btn rt" title="Rutube">
-                    <svg viewBox="0 0 24 24"><path d="M6 5h5.5c2.5 0 4.5 2 4.5 4.5S14 14 11.5 14H8v5H6V5z M8 7v5h3.5c1.4 0 2.5-1.1 2.5-2.5S12.9 7 11.5 7H8z"/><path d="M12.5 14l3.5 5h2.5l-4-5.5h-2z"/><circle cx="19" cy="6" r="2.5"/></svg>
-                </a>
+                    <svg viewBox="0 0 40 40"><path d="M30.4438 15.7381C30.5921 15.2742 30.4438 14.9333 29.738 14.9333H27.4041C26.8107 14.9333 26.5371 15.2278 26.3887 15.5525C26.3887 15.5525 25.2019 18.2663 23.5205 20.029C22.9766 20.5393 22.7293 20.7017 22.4326 20.7017C22.2843 20.7017 22.0695 20.5393 22.0695 20.0754V15.7381C22.0695 15.1814 21.8973 14.9333 21.4027 14.9333H17.7352C17.3644 14.9333 17.1413 15.1917 17.1413 15.4366C17.1413 15.9643 17.982 16.086 18.0686 17.5705V20.7945C18.0686 21.5013 17.9325 21.6295 17.6358 21.6295C16.8446 21.6295 14.92 18.9036 13.7786 15.7845C13.5549 15.1782 13.3305 14.9333 12.734 14.9333H10.4002C9.73335 14.9333 9.59998 15.2278 9.59998 15.5525C9.59998 16.1324 10.3912 19.0085 13.2841 22.8124C15.2127 25.4101 17.9299 26.8183 20.4025 26.8183C21.886 26.8183 22.0695 26.5055 22.0695 25.9668V24.0034C22.0695 23.3779 22.2101 23.2531 22.6799 23.2531C23.026 23.2531 23.6194 23.4154 25.0041 24.6679C26.5865 26.1523 26.8474 26.8183 27.7375 26.8183H30.0714C30.7382 26.8183 31.0716 26.5055 30.8793 25.8883C30.6688 25.2731 29.9133 24.3806 28.9108 23.3226C28.3668 22.7196 27.5509 22.0702 27.3036 21.7454C26.9574 21.3279 27.0563 21.1424 27.3036 20.7713C27.3036 20.7713 30.1471 17.0138 30.4438 15.7381Z"/></path></svg></a>
+                <a href="https://t.me/yachurch" target="_blank" class="social-btn tg" title="Telegram"><svg viewBox="0 0 24 24"><path d="M9.78,18.65L10.06,14.42L17.74,7.5C18.08,7.19 17.67,7.04 17.22,7.31L7.74,13.3L3.64,12C2.76,11.75 2.75,11.14 3.84,10.7L19.81,4.54C20.54,4.21 21.24,4.72 20.96,5.84L18.24,18.65C18.05,19.56 17.5,19.78 16.74,19.36L12.6,16.3L10.61,18.23C10.38,18.46 10.19,18.65 9.78,18.65Z"/></svg></a>
+                <a href="https://www.youtube.com/channel/UCBZ_qrBtWpSAPhHmb9Mtp-A" target="_blank" class="social-btn yt" title="YouTube"><svg viewBox="0 0 24 24"><path d="M10,15L15.19,12L10,9V15M21.56,7.17C21.69,7.64 21.78,8.27 21.84,9.07C21.91,9.87 21.94,10.66 21.94,11.44V12.56C21.94,13.34 21.91,14.13 21.84,14.93C21.78,15.73 21.69,16.36 21.56,16.83C21.31,17.73 20.73,18.31 19.83,18.56C19.36,18.69 18.5,18.78 17.18,18.84C15.88,18.91 14.69,18.94 13.59,18.94L13.5,19L12,19C10.59,19 9.16,18.94 7.7,18.9C6.23,18.87 4.96,18.79 3.9,18.66C3.06,18.54 2.39,18.07 1.96,17.16C1.46,16.14 1.21,14.6 1.21,12.56V11.44C1.21,9.4 1.46,7.86 1.96,6.84C2.39,5.93 3.06,5.46 3.9,5.34C4.96,5.21 6.23,5.13 7.7,5.1C9.16,5.06 10.59,5 12,5C13.41,5 14.84,5.06 16.3,5.1C17.77,5.13 19.04,5.21 20.1,5.34C21,5.46 21.56,5.93 22,6.84L21.56,7.17Z"/></svg></a>
+                <a href="https://rutube.ru/channel/38731742/" target="_blank" class="social-btn rt" title="Rutube"><svg viewBox="0 0 24 24"><path d="M6 5h5.5c2.5 0 4.5 2 4.5 4.5S14 14 11.5 14H8v5H6V5z M8 7v5h3.5c1.4 0 2.5-1.1 2.5-2.5S12.9 7 11.5 7H8z"/><path d="M12.5 14l3.5 5h2.5l-4-5.5h-2z"/><circle cx="19" cy="6" r="2.5"/></svg></a>
             </div>
         </div>
     </footer>
 
     <script>
-        // --- 1. ТЕМА И КАРТА ---
+        // --- 1. ТЕМА ---
         const themeBtn = document.getElementById('themeToggle');
         const mapFrame = document.getElementById('mapFrame');
         const themeIcon = themeBtn.querySelector('svg');
         const body = document.body;
-
         const iconSun = '<path d="M12,7A5,5 0 0,1 17,12A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,2L14.39,5.42C13.65,5.15 12.84,5 12,5C11.16,5 10.35,5.15 9.61,5.42L12,2M3.34,7L7.5,7.53C6.97,8.11 6.53,8.79 6.2,9.53L3.34,7M3.34,17L6.2,14.47C6.53,15.21 6.97,15.89 7.5,16.47L3.34,17M20.65,17L16.5,16.47C17.03,15.89 17.47,15.21 17.8,14.47L20.65,17M20.65,7L17.8,9.53C17.47,8.79 17.03,8.11 16.5,7.53L20.65,7M12,22L9.61,18.58C10.35,18.85 11.16,19 12,19C12.84,19 13.65,18.85 14.39,18.58L12,22Z"/>';
         const iconMoon = '<path d="M12,18C11.11,18 10.26,17.8 9.5,17.45C11.56,16.5 13,14.42 13,12C13,9.58 11.56,7.5 9.5,6.55C10.26,6.2 11.11,6 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,12A8,8 0 0,0 12,4C7.58,4 4,7.58 4,12C4,16.42 7.58,20 12,20A8,8 0 0,0 20,12Z"/>';
 
@@ -470,45 +559,36 @@
                 if(mapFrame) mapFrame.src = mapFrame.src.replace('theme=light', 'theme=dark');
             }
         }
-
         if (localStorage.getItem('theme') === 'light') updateTheme(true);
         else { themeIcon.innerHTML = iconMoon; } 
-
         themeBtn.addEventListener('click', () => {
             const isLight = !body.classList.contains('light-theme');
             updateTheme(isLight);
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         });
 
-        // --- 2. СЛАЙДЕР ---
+        // --- 2. СЛАЙДЕР СВАЙП ---
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         let touchStartX = 0;
-        let touchEndX = 0;
         
         function moveSlide(n) {
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + n + slides.length) % slides.length;
             slides[currentSlide].classList.add('active');
         }
-        
         let sliderInterval = setInterval(() => moveSlide(1), 7000);
-
         const sliderContainer = document.getElementById('mainSlider');
-        sliderContainer.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-            clearInterval(sliderInterval);
-        });
+        sliderContainer.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; clearInterval(sliderInterval); });
         sliderContainer.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            if (touchEndX < touchStartX - 50) moveSlide(1);
-            if (touchEndX > touchStartX + 50) moveSlide(-1);
+            if (e.changedTouches[0].screenX < touchStartX - 50) moveSlide(1);
+            if (e.changedTouches[0].screenX > touchStartX + 50) moveSlide(-1);
             sliderInterval = setInterval(() => moveSlide(1), 7000);
         });
 
-        // --- 3. СКРИПТ ЗАГРУЗКИ КОНТЕНТА (УМНЫЙ) ---
-        // Сначала пробуем ВК (ID группы: -202033194), если не вышло -> Ютуб
-        const vkRssUrl = `https://api.rss2json.com/v1/api.json?rss_url=https://vk.com/rss.php?oid=-202033194`;
+        // --- 3. ЗАГРУЗКА КОНТЕНТА (ВК -> YOUTUBE) ---
+        // Используем RSS ленту сообщества
+        const vkRssUrl = `https://api.rss2json.com/v1/api.json?rss_url=https://vk.com/rss.php?domain=yachurch`;
         const youtubeChannelID = "UCBZ_qrBtWpSAPhHmb9Mtp-A"; 
         const youtubeRssUrl = `https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=${youtubeChannelID}`;
         
@@ -522,23 +602,17 @@
                 
                 if(dataVk.status === 'ok' && dataVk.items.length > 0) {
                     renderCards(dataVk.items, container, 'vk');
-                    return; // Успех, выходим
+                    return; // Успех
                 }
-            } catch (e) { console.log('VK load failed, trying YouTube...'); }
+            } catch (e) {}
 
-            // 2. Фолбек на YouTube, если ВК не сработал
+            // 2. Фолбек на YouTube
             try {
                 const resYt = await fetch(youtubeRssUrl);
                 const dataYt = await resYt.json();
-                
-                if(dataYt.status === 'ok') {
-                    renderCards(dataYt.items, container, 'yt');
-                } else {
-                    container.innerHTML = '<p>Новости временно недоступны</p>';
-                }
-            } catch (e) {
-                container.innerHTML = '<p>Ошибка загрузки</p>';
-            }
+                if(dataYt.status === 'ok') renderCards(dataYt.items, container, 'yt');
+                else container.innerHTML = '<p>Новости временно недоступны</p>';
+            } catch (e) { container.innerHTML = '<p>Новости временно недоступны</p>'; }
         }
 
         function renderCards(items, container, source) {
@@ -546,40 +620,29 @@
             items.slice(0,3).forEach(item => {
                 const link = document.createElement('a');
                 link.className = 'video-card';
-                link.href = item.link; 
-                link.target = '_blank';
+                link.href = item.link; link.target = '_blank';
                 
                 let imgUrl = '';
-                
                 if (source === 'vk') {
-                    // Логика для ВК картинок
-                    if (item.enclosure && item.enclosure.link) {
-                        imgUrl = item.enclosure.link;
-                    } else {
-                        const div = document.createElement('div');
-                        div.innerHTML = item.description;
-                        const img = div.querySelector('img');
-                        if (img) imgUrl = img.src;
+                    if (item.enclosure && item.enclosure.link) imgUrl = item.enclosure.link;
+                    else {
+                        const div = document.createElement('div'); div.innerHTML = item.description;
+                        const img = div.querySelector('img'); if (img) imgUrl = img.src;
                     }
                 } else {
-                    // Логика для YouTube
                     imgUrl = item.thumbnail.replace('hqdefault', 'maxresdefault');
                 }
 
-                if (imgUrl) {
-                    link.style.backgroundImage = `url('${imgUrl}')`;
-                } else {
-                    // Заглушка
+                if (imgUrl) link.style.backgroundImage = `url('${imgUrl}')`;
+                else {
                     link.style.backgroundImage = `url('Черный.png')`;
                     link.style.backgroundSize = 'contain';
                     link.style.backgroundRepeat = 'no-repeat';
                 }
-
                 link.innerHTML = `<div class="play-btn"><svg viewBox="0 0 24 24"><path d="M8,5.14V19.14L19,12.14L8,5.14Z"/></svg></div>`;
                 container.appendChild(link);
             });
         }
-
         document.addEventListener("DOMContentLoaded", loadContent);
 
         // --- 4. МЕНЮ ---
@@ -588,8 +651,6 @@
             document.getElementById('overlay').classList.toggle('active');
             document.querySelector('.burger-btn').classList.toggle('open');
         }
-
-        // --- 5. МОДАЛКА ---
         function openModal() { document.getElementById('modal').style.display = 'flex'; }
         function closeModal() { document.getElementById('modal').style.display = 'none'; }
     </script>
