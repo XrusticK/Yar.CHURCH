@@ -375,9 +375,9 @@
 
     <div class="mobile-overlay" id="overlay" onclick="toggleMenu()"></div>
     <div class="mobile-sidebar" id="sidebar">
-        <a href="#top" class="mob-link" onclick="toggleMenu()">Главная</a>
-        <a href="#calendar" class="mob-link" onclick="toggleMenu()">Календарь</a>
-        <a href="#video-feed" class="mob-link" onclick="toggleMenu()">Новости</a>
+        <a href="#top" class="mob-link" onclick="toggleMenu()">О нас</a>
+        <a href="#calendar" class="mob-link" onclick="toggleMenu()">Расписание</a>
+        <a href="#video-feed" class="mob-link" onclick="toggleMenu()">Медиа</a>
         <a href="#contacts" class="mob-link" onclick="toggleMenu()">Контакты</a>
         <button class="btn-donate" onclick="toggleMenu(); openModal()" style="margin-top:20px; width:100%">Пожертвовать</button>
     </div>
@@ -396,9 +396,9 @@
         </div>
 
         <nav class="desktop-nav">
-            <a href="#top" class="nav-link">Главная</a>
-            <a href="#calendar" class="nav-link">Календарь</a>
-            <a href="#video-feed" class="nav-link">Новости</a>
+            <a href="#top" class="nav-link">О нас</a>
+            <a href="#calendar" class="nav-link">Расписание</a>
+            <a href="#video-feed" class="nav-link">Медиа</a>
             <a href="#contacts" class="nav-link">Контакты</a>
         </nav>
 
@@ -587,7 +587,6 @@
         });
 
         // --- 3. ЗАГРУЗКА КОНТЕНТА (ВК -> YOUTUBE) ---
-        // Используем RSS ленту сообщества
         const vkRssUrl = `https://api.rss2json.com/v1/api.json?rss_url=https://vk.com/rss.php?domain=yachurch`;
         const youtubeChannelID = "UCBZ_qrBtWpSAPhHmb9Mtp-A"; 
         const youtubeRssUrl = `https://api.rss2json.com/v1/api.json?rss_url=https://www.youtube.com/feeds/videos.xml?channel_id=${youtubeChannelID}`;
